@@ -11,7 +11,7 @@ public class Biglietto
 
     public Biglietto()
     {      
-    }
+    } 
 
     public Biglietto(long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto)
     {

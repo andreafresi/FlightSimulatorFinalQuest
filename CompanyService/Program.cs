@@ -74,11 +74,15 @@ Volo v1 = new Volo(1,100,15,"Napoli","New York",new DateTime(2024,5,3,10,30,0),n
 db.Voli.Add(v1);
 Volo v2 = new Volo(2,80,15,"Madrid","Dubai",new DateTime(2024,10,3,12,15,0),new DateTime(2024,11,3,1,0,0));
 db.Voli.Add(v2);
+db.SaveChanges();
 
-Biglietto b1 = new Biglietto(v1.VoloId, 17, 150.2, new DateTime(2024-3-29-9-10-11));
+Biglietto b1 = new Biglietto(v1.VoloId, 17, 150.2, new DateTime(2024,3,29));
 db.Biglietti.Add(b1);
-Biglietto b2 = new Biglietto(v2.VoloId, 2, 25.70, new DateTime(2020-1-13-8-9-10));
+
+Biglietto b2 = new Biglietto(v2.VoloId, 2, 25.70, new DateTime(2020,1,13));
 db.Biglietti.Add(b2);
+
+db.SaveChanges();
 
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwagger(options => options.PreSerializeFilters.Add((swagger, req) => swagger.Servers = new List<OpenApiServer>() { new OpenApiServer() { Url = $"http://{req.Host}" } }));
