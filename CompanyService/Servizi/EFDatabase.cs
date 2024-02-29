@@ -70,4 +70,74 @@ public class EFDatabase : IDatabaseService
         }           
         return aereo;
     }
+
+    public async Task<Volo?> GetVoloByIdVolo (long idVolo)
+    {
+        return await _context.Voli.FirstOrDefaultAsync(
+           x => x.VoloId == idVolo
+       );
+    }
+
+    public async Task<Volo?> AddVolo (long aereoId, int postiResidui, double costoPosto, string partenza, 
+                    string destinazione, DateTime orarioPartenza, DateTime orarioDestinazione)
+    {
+        Volo v = new Volo (aereoId, postiResidui, costoPosto, partenza, destinazione, orarioPartenza, orarioDestinazione);
+        await _context.Voli.AddAsync(v);
+        await _context.SaveChangesAsync();
+        return v;
+    }
+
+    public async Task DeleteVoloByIdVolo(long idVolo){
+        var volo = await GetVoloByIdVolo(idVolo);
+        if (volo != null)
+        {
+            _context.Voli.Remove(volo);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<Volo?> UpdateVoloByIdVolo (long idVolo, long aereoId, int postiResidui, double costoPosto, string partenza, 
+                    string destinazione, DateTime orarioPartenza, DateTime orarioDestinazione)
+        {        
+        var volo = await GetVoloByIdVolo(idVolo);
+        if (volo != null)
+        {
+            volo.UpdateInformazioniVolo(aereoId, postiResidui, costoPosto, partenza, destinazione, orarioPartenza, orarioDestinazione);
+            await _context.SaveChangesAsync();
+        }           
+        return volo;
+    }
+    
+    public async Task<Biglietto?> GetBigliettoByIdBiglietto (long idBiglietto)
+    {
+        return await _context.Biglietti.FirstOrDefaultAsync(
+           x => x.idBiglietto == idBiglietto
+        );
+    }
+
+    public async Task<Biglietto?> AddBiglietto (long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto)
+    {
+        Biglietto b = new Biglietto (voloId, numeroPostiRichiesti, importoTotale, dataAcquisto);
+        await _context.Biglietti.AddAsync(b);
+        await _context.SaveChangesAsync();
+        return b;
+    }
+
+    //come si mette la ricerca tramite idvolo nei biglietti e come fare per bene il return
+    //ToListAsync è giusto?
+    public async Task<List<Biglietto>> GetBigliettoByIdVolo (long idVolo)
+    {
+        return await _context.Biglietti.Where(
+           x => x.idVolo == idVolo
+        ).ToListAsync();
+    }
+
+    public async Task DeleteBigliettoByIdBiglietto (long idBiglietto){
+        var biglietto = await GetBigliettoByIdBiglietto (idBiglietto);
+        if (biglietto != null)
+        {
+            _context.Biglietti.Remove(biglietto);
+            await _context.SaveChangesAsync();
+        }
+    }
 }
