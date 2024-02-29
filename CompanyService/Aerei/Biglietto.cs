@@ -13,6 +13,14 @@ public class Biglietto
     {      
     }
 
+    public Biglietto(long voloId, int numeroPostiRichiesti, double importoToale, DateTime dataAcquisto)
+    {
+        VoloId = voloId;
+        NumeroPostiRichiesti = numeroPostiRichiesti;
+        ImportoToale = importoToale;
+        DataAcquisto = dataAcquisto;        
+    }
+
     public Biglietto(long bigliettoId, long voloId, int numeroPostiRichiesti, double importoToale, DateTime dataAcquisto)
     {
         BigliettoId = bigliettoId;
