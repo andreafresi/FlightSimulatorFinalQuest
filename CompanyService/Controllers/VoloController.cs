@@ -20,7 +20,7 @@ public class VoloController : ControllerBase
     }
 
     // Get(long idVolo)
-    [HttpGet()]
+    [HttpGet("GetIdVolo")]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(VoloApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get (long idVolo)
@@ -37,7 +37,7 @@ public class VoloController : ControllerBase
     }
 
     // GetVoliConPostiDisponibili()
-    [HttpGet()]
+    [HttpGet("GetVoliConPostiDisponibili")]
     [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(VoloApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetVoliConPostiDisponibili ()

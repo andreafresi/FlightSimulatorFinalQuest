@@ -18,8 +18,7 @@ public class BigliettoController : ControllerBase
 
 
     // Get(long idBiglietto)
-    [Route("GetBiglietto")]
-    [HttpGet]
+    [HttpGet("GetBiglietto")]
     [ProducesResponseType(typeof(int), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BigliettoApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Get(long bigliettoid){
@@ -36,8 +35,8 @@ public class BigliettoController : ControllerBase
 
     // Post(CreateBigliettoRequest)
 
-    [Route("Aggiungi Biglietto")]
-    [HttpPost()]
+
+    [HttpPost("PostBiglietti")]
     [ProducesResponseType(typeof(long), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(BigliettoApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Post(CreateBigliettoRequest request)
@@ -61,8 +60,7 @@ public class BigliettoController : ControllerBase
     }
 
     // GetBigliettiByVoloId(long idVolo)
-    [Route("Get tutti i biglietti del volo")]
-    [HttpGet()]
+    [HttpGet("Get tutti i biglietti del volo")]
     [ProducesResponseType(typeof(long), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(List<BigliettoApi>), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetListaBiglietti(long idVolo)
