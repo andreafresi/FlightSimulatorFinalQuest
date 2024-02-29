@@ -111,7 +111,7 @@ public class EFDatabase : IDatabaseService
     public async Task<Biglietto?> GetBigliettoByIdBiglietto (long idBiglietto)
     {
         return await _context.Biglietti.FirstOrDefaultAsync(
-           x => x.idBiglietto == idBiglietto
+           x => x.BigliettoId == idBiglietto
         );
     }
 
@@ -123,12 +123,10 @@ public class EFDatabase : IDatabaseService
         return b;
     }
 
-    //come si mette la ricerca tramite idvolo nei biglietti e come fare per bene il return
-    //ToListAsync è giusto?
     public async Task<List<Biglietto>> GetBigliettoByIdVolo (long idVolo)
     {
         return await _context.Biglietti.Where(
-           x => x.idVolo == idVolo
+           x => x.VoloId == idVolo
         ).ToListAsync();
     }
 

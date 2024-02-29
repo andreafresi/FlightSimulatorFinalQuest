@@ -6,27 +6,27 @@ public class Biglietto
     public long BigliettoId  { get; set; }
     public long VoloId { get; set; } // esiste già, ma si riscrive
     public int NumeroPostiRichiesti { get; set; } // può avere più persone in un unico 
-    public double ImportoToale { get; set; } // importo singolo X numero postiRichiesti
+    public double ImportoTotale { get; set; } // importo singolo X numero postiRichiesti
     public DateTime DataAcquisto { get; set; }
 
     public Biglietto()
     {      
     }
 
-    public Biglietto(long voloId, int numeroPostiRichiesti, double importoToale, DateTime dataAcquisto)
+    public Biglietto(long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto)
     {
         VoloId = voloId;
         NumeroPostiRichiesti = numeroPostiRichiesti;
-        ImportoToale = importoToale;
+        ImportoTotale = importoTotale;
         DataAcquisto = dataAcquisto;        
     }
 
-    public Biglietto(long bigliettoId, long voloId, int numeroPostiRichiesti, double importoToale, DateTime dataAcquisto)
+    public Biglietto(long bigliettoId, long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto)
     {
         BigliettoId = bigliettoId;
         VoloId = voloId;
         NumeroPostiRichiesti = numeroPostiRichiesti;
-        ImportoToale = importoToale;
+        ImportoTotale = importoTotale;
         DataAcquisto = dataAcquisto;        
     }
 
