@@ -8,7 +8,7 @@ namespace CompanyService.Controllers;
 [Route("api/v{version:apiVersion}/volo")]
 public class VoloController : ControllerBase
 {
-
+    
     public VoloController()
     {
     }
