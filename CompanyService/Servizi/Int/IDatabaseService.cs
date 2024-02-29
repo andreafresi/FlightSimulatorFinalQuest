@@ -20,6 +20,7 @@ public interface IDatabaseService
     Task<Volo?> AddVolo (long aereoId, int postiResidui, double costoPosto, string partenza, string destinazione, DateTime orarioPartenza, DateTime orarioDestinazione);
     Task DeleteVoloByIdVolo (long idVolo);
     Task<Volo?> UpdateVoloByIdVolo (long idVolo, long aereoId, int postiResidui, double costoPosto, string partenza, string destinazione, DateTime orarioPartenza, DateTime orarioDestinazione);
+    Task<List<Volo>> GetListaVoli ();
     Task<Biglietto?> GetBigliettoByIdBiglietto (long idBiglietto);
     Task<Biglietto?> AddBiglietto (long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto);
     Task<List<Biglietto?>> GetBigliettoByIdVolo (long idVolo);

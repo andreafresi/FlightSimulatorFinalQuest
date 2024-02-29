@@ -11,6 +11,18 @@ public class VoloApi
     public DateTime OrarioPartenza {get; set;}
     public DateTime OrarioDestinazione {get; set;}
     
+    public VoloApi(long aereoId, int postiResidui, double costoPosto, string partenza, 
+                    string destinazione, DateTime orarioPartenza, DateTime orarioDestinazione)
+    {
+        AereoId = aereoId;
+        PostiResidui = postiResidui;
+        CostoPosto = costoPosto;
+        Partenza = partenza;
+        Destinazione = destinazione;
+        OrarioPartenza = orarioPartenza;
+        OrarioDestinazione = orarioDestinazione;
+    }
+
     public VoloApi(long voloId, long aereoId, int postiResidui, double costoPosto, string partenza, 
                     string destinazione, DateTime orarioPartenza, DateTime orarioDestinazione)
     {

@@ -107,6 +107,12 @@ public class EFDatabase : IDatabaseService
         }           
         return volo;
     }
+
+    public async Task<List<Volo>> GetListaVoli ()
+    {
+        return await _context.Voli
+        .Where(b => true).ToListAsync();
+    }
     
     public async Task<Biglietto?> GetBigliettoByIdBiglietto (long idBiglietto)
     {
