@@ -123,11 +123,13 @@ public class EFDatabase : IDatabaseService
         return b;
     }
 
-    public async Task<Biglietto?> GetBigliettoByIdVolo (long idVolo)
+    //come si mette la ricerca tramite idvolo nei biglietti e come fare per bene il return
+    //ToListAsync è giusto?
+    public async Task<List<Biglietto>> GetBigliettoByIdVolo (long idVolo)
     {
-        return await _context.Biglietti.FirstOrDefaultAsync(
+        return await _context.Biglietti.Where(
            x => x.idVolo == idVolo
-        );
+        ).ToListAsync();
     }
 
     public async Task DeleteBigliettoByIdBiglietto (long idBiglietto){
