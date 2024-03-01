@@ -67,10 +67,9 @@ IDatabaseService dbService;
     [Fact]
     public async void PostVolo_CreoUnVolo_VoloTrovatoEVerificato()
     {
-        var volo = new Volo(1,100,10, 16.30,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0));
         // Given
         var database = new Mock<IDatabaseService>();
-        database.Setup(x => x.AddVolo(100,10, 16.30,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0))).ReturnsAsync(volo);
+        database.Setup(x => x.AddVolo(It.IsAny<long>(),It.IsAny<int>(),It.IsAny<double>(),It.IsAny<string>(),It.IsAny<string>(),It.IsAny<DateTime>(),It.IsAny<DateTime>())).ReturnsAsync(new Volo(100,10, 16.30,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0)));
         
         var _voloController = new VoloController(database.Object);
         CreateVoloRequest createVoloRequest = new CreateVoloRequest(50,10, 421.60,"Rimini","Tokyo",new DateTime(2024,6,4,12,0,0),new DateTime(2024,6,4,23,20,0));
@@ -88,6 +87,7 @@ IDatabaseService dbService;
         Assert.NotNull(resultGet);
         Assert.NotNull(resultGet.Value);
 
+        //Fix System.InvalidCastException da System.String a CompanyService.VoloApi
         VoloApi b = (VoloApi)resultGet.Value;
         Assert.Equal(a.AereoId, b.AereoId);
         Assert.Equal(a.PostiResidui, b.PostiResidui);
