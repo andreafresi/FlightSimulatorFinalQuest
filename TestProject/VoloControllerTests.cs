@@ -1,24 +1,39 @@
+using System.IO.Compression;
 using System.Net;
 using AirRouteAdministrator.API;
 using CompanyService;
+using CompanyService.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace TestProject;
 
 public class VoloControllerTests{
-   
+FlightSimulatorDBContext _dbContext;
+IDatabaseService dbService;
+
+   public VoloControllerTests(){
+    var _dbInMemory = new DbContextOptionsBuilder<FlightSimulatorDBContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;
+
+    _dbContext = new FlightSimulatorDBContext(_dbInMemory);
+    dbService = new EFDatabase(_dbContext);
+   }
+
+
     [Fact]  
-    public async void GetAereo_RecuperoUnAereo_RitornoUnAereo(){
+    public async void GetVolo_RecuperoUnVolo_RitornoUnVolo(){
         
         // ARRANGE
         var database = new Mock<IDatabaseService>();
-        database.Setup(x => x.GetAereoDaIdAereo(It.IsAny<long>())).ReturnsAsync(new Aereo(1, 10000, "Codice", "Colore", 50));
-        var _aereoController = new AereoController(database.Object);
-        long idAereo = 1;
+        database.Setup(x => x.GetVoloByIdVolo(It.IsAny<long>())).ReturnsAsync(new Volo(1,100,15,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0)));
+        var _voloController = new VoloController(database.Object);
+        long idVolo = 1;
 
         // ACT
-        var result = await _aereoController.Get(idAereo) as ObjectResult;
+        var result = await _voloController.Get(idVolo) as ObjectResult;
 
         // ASSERT
         Assert.NotNull(result);
@@ -26,57 +41,80 @@ public class VoloControllerTests{
     }
  
     [Fact]  
-    public async void PostAereo_CreoUnAereo_AereoCreato(){
+    public async void GetVoloConPostiDisponibili_NessunVolo_RitornoTreVoli(){
         
         // ARRANGE
+
+        var listaListaVolo = new List<Volo>(){
+            new Volo(1,100,10, 16.30,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0)),
+            new Volo(12,50,52, 421.60,"Rimini","Tokyo",new DateTime(2024,6,4,12,0,0),new DateTime(2024,6,4,23,20,0)),
+            new Volo(26,498,27, 34.85,"Bologna","Londra",new DateTime(2024,11,20,14,0,0),new DateTime(2024,11,20,15,20,0)),
+        };
+
         var database = new Mock<IDatabaseService>();
-        database.Setup(x => x.GetFlottaByIdFlotta(It.IsAny<long>())).ReturnsAsync(new Flotta(1, "FLOTTA 1", new List<Aereo>()));
-        database.Setup(x => x.AddAereoAFlotta(It.IsAny<long>(), It.IsAny<string>(),It.IsAny<string>(),It.IsAny<long>())).ReturnsAsync(new Aereo(1,10000, "MONTI", "ASADADADA", 100));
+        database.Setup(x => x.GetListaVoli()).ReturnsAsync(listaListaVolo);
 
-        var _aereoController = new AereoController(database.Object);
-        CreateAereoRequest createAereoRequest = new CreateAereoRequest(10000,
-        "MONTI", "ASADADADA", 100);
-
+        var _voloController = new VoloController(database.Object);
         // ACT
         // POST
-        var result = await _aereoController.Post(createAereoRequest) as ObjectResult;
+        var result = await _voloController.GetVoliConPostiDisponibili() as ObjectResult;
 
         // ASSERT
         Assert.NotNull(result);
         Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
     }
 
-    [Fact]  
-    public async void PostAereo_CreoUnAereo_AereoTrovatoEVerificato(){
+    [Fact]
+    public async void PostVolo_CreoUnVolo_VoloTrovatoEVerificato()
+    {
+        var volo = new Volo(1,100,10, 16.30,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0));
+        // Given
+        var database = new Mock<IDatabaseService>();
+        database.Setup(x => x.AddVolo(100,10, 16.30,"Napoli","New York",new DateTime(2024,5,3,10,30,0),new DateTime(2024,5,3,19,30,0))).ReturnsAsync(volo);
         
-        // ARRANGE
-         var database = new Mock<IDatabaseService>();
-        database.Setup(x => x.GetAereoDaIdAereo(It.IsAny<long>())).ReturnsAsync(new Aereo(1, 10000,"MONTI", "ASADADADA", 100));
-         database.Setup(x => x.GetFlottaByIdFlotta(It.IsAny<long>())).ReturnsAsync(new Flotta(1, "FLOTTA 1", new List<Aereo>()));
-        database.Setup(x => x.AddAereoAFlotta(It.IsAny<long>(), It.IsAny<string>(),It.IsAny<string>(),It.IsAny<long>())).ReturnsAsync(new Aereo(1, 10000,"MONTI", "ASADADADA", 100));
+        var _voloController = new VoloController(database.Object);
+        CreateVoloRequest createVoloRequest = new CreateVoloRequest(50,10, 421.60,"Rimini","Tokyo",new DateTime(2024,6,4,12,0,0),new DateTime(2024,6,4,23,20,0));
         
-        var _aereoController = new AereoController(database.Object);
-        CreateAereoRequest createAereoRequest = new CreateAereoRequest(10000,
-        "MONTI", "ASADADADA", 100);
+        // When
+        var result = await _voloController.Post(createVoloRequest) as ObjectResult;
 
-        // ACT
-        // POST
-        var result = await _aereoController.Post(createAereoRequest) as ObjectResult;
-
-        // ASSERT
+        // Then
         Assert.NotNull(result);
         Assert.NotNull(result.Value);
         Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
         
-        AereoApi a = (AereoApi)result.Value;
-        var resultGet = await _aereoController.Get(a.IdAereo) as ObjectResult;
+        VoloApi a = (VoloApi)result.Value;
+        var resultGet = await _voloController.Get(a.VoloId) as ObjectResult;
         Assert.NotNull(resultGet);
         Assert.NotNull(resultGet.Value);
 
-        AereoApi b = (AereoApi)resultGet.Value;
-        Assert.Equal(a.CodiceAereo, b.CodiceAereo);
-        Assert.Equal(a.Colore, b.Colore);
-        Assert.Equal(a.NumeroDiPosti, b.NumeroDiPosti);
+        VoloApi b = (VoloApi)resultGet.Value;
+        Assert.Equal(a.AereoId, b.AereoId);
+        Assert.Equal(a.PostiResidui, b.PostiResidui);
+        Assert.Equal(a.CostoPosto, b.CostoPosto);
+        Assert.Equal(a.Partenza, b.Partenza);
+        Assert.Equal(a.Destinazione, b.Destinazione);
+        Assert.Equal(a.OrarioPartenza, b.OrarioPartenza);
+        Assert.Equal(a.OrarioDestinazione, b.OrarioDestinazione);
+    }
 
+    [Fact]
+    public async void DeleteVolo_CreoUnVolo_ ()
+    {
+        // Given
+    
+        // When
+    
+        // Then
+    }
+
+    [Fact]
+    public void UpdateVolo_CreoUnVolo_RitornoUnVoloModificato()
+    {
+        // Given
+    
+        // When
+    
+        // Then
     }
 }
