@@ -56,7 +56,7 @@ public class VoloController : ControllerBase
     }
 
     // Post(CreateVoloRequest)
-    [HttpPost()]
+    [HttpPost("CreateVolo")]
     [ProducesResponseType(typeof(long), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(VoloApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Post(CreateVoloRequest request)
@@ -69,7 +69,7 @@ public class VoloController : ControllerBase
     }
 
     // Delete(long idVolo)
-    [HttpDelete()]
+    [HttpDelete("DeleteVolo")]
     [ProducesResponseType(typeof(long), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(VoloApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Delete (long idVolo)
@@ -86,7 +86,7 @@ public class VoloController : ControllerBase
     }
 
     // Put(UpdateVoloRequest)
-    [HttpPut()]
+    [HttpPut("UpdateVolo")]
     [ProducesResponseType(typeof(long), (int)HttpStatusCode.NotFound)]
     [ProducesResponseType(typeof(VoloApi), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> Put(UpdateVoloRequest request)
