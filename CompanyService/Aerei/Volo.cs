@@ -11,6 +11,7 @@ public class Volo
     public string Destinazione {get;set;}
     public DateTime OrarioPartenza {get;set;}
     public DateTime OrarioDestinazione {get;set;}
+    public virtual ICollection<Biglietto> Biglietti {get; set;}
 
     public Volo()
     {

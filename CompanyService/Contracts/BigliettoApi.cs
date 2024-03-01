@@ -16,6 +16,13 @@ public class BigliettoApi
         ImportoTotale = importoTotale;
         DataAcquisto = dataAcquisto;
     }
+    public BigliettoApi(long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto)
+    {
+        VoloId = voloId;
+        NumeroPostiRichiesti = numeroPostiRichiesti;
+        ImportoTotale = importoTotale;
+        DataAcquisto = dataAcquisto;
+    }
 
     public BigliettoApi BigliettoApiFactory (long bigliettoId, long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto)
     {

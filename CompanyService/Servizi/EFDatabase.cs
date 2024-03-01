@@ -1,4 +1,6 @@
 ﻿
+using System.CodeDom;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyService;
@@ -134,6 +136,15 @@ public class EFDatabase : IDatabaseService
         return await _context.Biglietti.Where(
            x => x.VoloId == idVolo
         ).ToListAsync();
+    }
+       public async Task DeleteTuttoVoloAndBiglietti(long idVolo)
+    {
+          var volo = await _context.Voli.Include(x=> x.Biglietti).SingleOrDefaultAsync(x => x.VoloId == idVolo);
+          foreach( var bi in volo.Biglietti){
+             _context.Biglietti.Remove(bi);
+          }
+        _context.Voli.Remove(volo);
+        await _context.SaveChangesAsync();
     }
 
     public async Task DeleteBigliettoByIdBiglietto (long idBiglietto){

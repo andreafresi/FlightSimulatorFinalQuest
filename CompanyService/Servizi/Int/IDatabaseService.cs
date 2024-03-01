@@ -25,5 +25,6 @@ public interface IDatabaseService
     Task<Biglietto?> AddBiglietto (long voloId, int numeroPostiRichiesti, double importoTotale, DateTime dataAcquisto);
     Task<List<Biglietto?>> GetBigliettoByIdVolo (long idVolo);
     Task DeleteBigliettoByIdBiglietto (long idBiglietto);
+    Task DeleteTuttoVoloAndBiglietti(long Voloid);
 
 }

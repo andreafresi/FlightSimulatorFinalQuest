@@ -63,7 +63,7 @@ public class VoloController : ControllerBase
     {
         var voloBl = await _databaseService.AddVolo(request.AereoId, request.PostiResidui, request.CostoPosto, request.Partenza, request.Destinazione, request.OrarioPartenza, request.OrarioPartenza);
         
-        var voloApi = new VoloApi (voloBl.AereoId, voloBl.PostiResidui, voloBl.CostoPosto, voloBl.Partenza, voloBl.Destinazione, voloBl.OrarioPartenza, voloBl.OrarioDestinazione);
+        var voloApi = new VoloApi(voloBl.AereoId, voloBl.PostiResidui, voloBl.CostoPosto, voloBl.Partenza, voloBl.Destinazione, voloBl.OrarioPartenza, voloBl.OrarioDestinazione);
 
         return Ok(voloApi);
     }
@@ -80,7 +80,8 @@ public class VoloController : ControllerBase
         {
             return NotFound();
         }
-        await _databaseService.DeleteVoloByIdVolo(idVolo);
+        await _databaseService.DeleteTuttoVoloAndBiglietti(idVolo);
+  //      await _databaseService.DeleteVoloByIdVolo(idVolo);
         return Ok();
     }
 
