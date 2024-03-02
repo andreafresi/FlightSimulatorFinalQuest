@@ -82,6 +82,7 @@ IDatabaseService dbService;
         Assert.NotNull(result.Value);
         Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
         
+        //In questo punto dentro "a" non c'è il VoloId, nella creazione di "resultGet" a.VoloId è zero e non funziona, il .Value è quello dell'errore e quindi stringa
         VoloApi a = (VoloApi)result.Value;
         var resultGet = await _voloController.Get(a.VoloId) as ObjectResult;
         Assert.NotNull(resultGet);
